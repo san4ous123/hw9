@@ -1,0 +1,56 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:laba9.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+        x:Class="laba9.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="laba9"
+		Width="800"
+		Height="500">
+
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+
+	<Window.Styles>
+		<Style Selector="Button.button[IsEnabled=true]">
+			<Setter Property="Background" Value="#CCCCFF"></Setter>
+		</Style>
+		<Style Selector="Button.button">
+			<Setter Property="Background" Value="#CCCCFF"></Setter>
+		</Style>
+	</Window.Styles>
+
+	<SplitView IsPaneOpen="true"
+           DisplayMode="Inline"
+           OpenPaneLength="250">
+		<SplitView.Pane>
+			<TreeView SelectionChanged="OnTreeViewSelectionChanged" Items="{Binding Folders}"
+			  Width="300" Height="500"
+			  HorizontalAlignment="Left"
+			  VerticalAlignment="Top"
+			  Background="#CCCCFF">
+				<TreeView.ItemTemplate>
+					<TreeDataTemplate ItemsSource="{Binding Subfolders}">
+						<ContentControl TemplateApplied="ClickForLoadNodes">
+							<TextBlock Text="{Binding Name}"/>
+						</ContentControl>
+					</TreeDataTemplate>
+				</TreeView.ItemTemplate>
+			</TreeView>
+		</SplitView.Pane>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 16 0 0" Spacing="8">
+			<Button Classes="button" Name="back" VerticalAlignment="Center" Padding="20" IsEnabled="{Binding EnableBack}">back</Button>
+			<Carousel Items="{Binding SelectedImages}" Width="350" Height="300" Name="carousel">
+				<Carousel.ItemTemplate>
+					<DataTemplate>
+						<Image ToolTip.Tip="{Binding StrPath}" Source="{Binding Image}"></Image>
+					</DataTemplate>
+				</Carousel.ItemTemplate>
+			</Carousel>
+			<Button Classes="button" Name="next" VerticalAlignment="Center"  Padding="20" IsEnabled="{Binding EnableNext}">next</Button>
+		</StackPanel>
+	</SplitView>
+</Window>
